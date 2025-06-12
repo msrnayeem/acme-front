@@ -37,6 +37,7 @@ export default function Forget() {
           { email },
           {
             withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
           }
         );
 

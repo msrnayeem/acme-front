@@ -40,6 +40,7 @@ export default function SignUp() {
           { email, password, name },
           {
             withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
           }
         );
 

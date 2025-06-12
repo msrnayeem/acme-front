@@ -56,8 +56,9 @@ const Categorypage = () => {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`,
         {
-          withCredentials: true,
-        }
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
       if (res.data.success) {
         setCategories(res.data.data);
@@ -84,7 +85,10 @@ const Categorypage = () => {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`,
         { name: categoryName.trim() },
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
 
       if (res.data.success) {
@@ -111,7 +115,10 @@ const Categorypage = () => {
       const res = await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories/${editCategoryId}`,
         { name: editCategoryName.trim() },
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
 
       if (res.data.success) {
@@ -132,7 +139,10 @@ const Categorypage = () => {
     try {
       const res = await axios.delete(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories/${id}`,
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
 
       if (res.data.success) {

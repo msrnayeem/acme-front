@@ -47,7 +47,10 @@ const UserPage = () => {
       try {
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?page=${page}&limit=${limit}`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
         );
         const fetchedUsers: User[] = res.data.data || [];
         // Make sure every user has name; if not, assign default
@@ -68,7 +71,10 @@ const UserPage = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${userId}`,
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
       const user: User = res.data.data;
       if (!user.name) user.name = "Unnamed User";
@@ -85,7 +91,10 @@ const UserPage = () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?page=${page}&limit=${limit}`,
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
       const fetchedUsers: User[] = res.data.data || [];
       const normalizedUsers = fetchedUsers.map((u) => ({

@@ -48,6 +48,7 @@ export default function Verification() {
           { email, otp },
           {
             withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
           }
         );
 
@@ -90,8 +91,9 @@ export default function Verification() {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/resend-otp`,
         { email, type },
         {
-          withCredentials: true,
-        }
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       );
 
       // console.log(response.data);

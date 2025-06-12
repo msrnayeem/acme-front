@@ -43,6 +43,7 @@ export default function SignInPage() {
           { email, password },
           {
             withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
           }
         );
 

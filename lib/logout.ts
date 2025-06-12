@@ -7,7 +7,10 @@ export const handleLogout = () => {
       .post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`,
         {},
-        { withCredentials: true }
+        {
+            withCredentials: true,
+            headers: { 'Content-Type': 'application/json' },
+          }
       )
       .then((response) => {
         // console.log("Logout successful:", response.data);
