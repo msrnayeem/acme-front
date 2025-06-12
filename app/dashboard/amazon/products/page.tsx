@@ -73,7 +73,7 @@ const Page = () => {
         const asin = item.summaries?.[0]?.asin || '';
 
         return {
-          id: (currentPage - 1) * 5 + index + 1,
+          id: (currentPage - 1) * 20 + index + 1,
           asin,
           name,
           price: price !== undefined ? `$${price}` : "-",
