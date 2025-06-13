@@ -51,11 +51,12 @@ export default function SignInPage() {
 
         if (response.status === 200) {
           toast.success("Signed in successfully!");
-          if (response.data?.user.role === "admin") {
-            router.push("/dashboard");
-          } else {
-            router.push("/");
-          }
+          router.push("/dashboard");
+          // if (response.data?.user.role === "admin") {
+          //   router.push("/dashboard");
+          // } else {
+          //   router.push("/");
+          // }
         }
       } catch (err: unknown) {
         if (axios.isAxiosError(err) && err.response) {
