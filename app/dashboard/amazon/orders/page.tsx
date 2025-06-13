@@ -127,6 +127,27 @@ const Page = () => {
             Manage your Amazon store orders
           </p>
         </div>
+      </div>
+
+      {/* Tabs and Search - put in the same row */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="w-full sm:w-auto"
+        >
+          <TabsList className="bg-gray-100">
+            {statusTabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="data-[state=active]:bg-black data-[state=active]:text-white capitalize"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
         <div className="w-full sm:w-80">
           <input
             type="text"
@@ -137,25 +158,6 @@ const Page = () => {
           />
         </div>
       </div>
-
-      {/* Tabs */}
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full mb-4"
-      >
-        <TabsList className="bg-gray-100">
-          {statusTabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className="data-[state=active]:bg-black data-[state=active]:text-white capitalize"
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
 
       {/* Table */}
       <CustomTable>
