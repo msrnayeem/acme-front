@@ -99,8 +99,8 @@ export default function Reset() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type="text"
-                    placeholder="Value"
+                    type="password"
+                    placeholder="Enter your new password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -112,8 +112,8 @@ export default function Reset() {
                 <div className="relative">
                   <Input
                     id="confirmpassword"
-                    type="text"
-                    placeholder="Value"
+                    type="password"
+                    placeholder="Confirm your new password"
                     value={confirmpassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                   />

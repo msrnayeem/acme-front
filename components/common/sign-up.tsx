@@ -104,7 +104,7 @@ export default function SignUp() {
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Value"
+                    placeholder="Enter your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -117,7 +117,7 @@ export default function SignUp() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Value"
+                    placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -130,8 +130,8 @@ export default function SignUp() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type="text"
-                    placeholder="Value"
+                    type="password"
+                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />

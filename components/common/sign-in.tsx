@@ -127,8 +127,8 @@ export default function SignInPage() {
                   {/* <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black h-5 w-5" /> */}
                   <Input
                     id="password"
-                    type="text"
-                    placeholder="Value"
+                    type="password"
+                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />

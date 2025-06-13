@@ -157,8 +157,8 @@ export default function Verification() {
                 <div className="relative">
                   <Input
                     id="pin"
-                    type="text"
-                    placeholder="Value"
+                    type="password"
+                    placeholder="Enter 6 digit pin"
                     value={otp}
                     onChange={(e) => setotp(e.target.value)}
                   />
