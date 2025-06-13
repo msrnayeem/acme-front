@@ -35,6 +35,7 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [nextToken, setNextToken] = useState<string | null>(null);
   const [prevTokens, setPrevTokens] = useState<string[]>([]);
+  const [search, setSearch] = useState<string>("");
 
   const fetchProducts = async (token?: string, isPrevious: boolean = false) => {
     try {
@@ -44,10 +45,12 @@ const Page = () => {
         params.append("nextToken", token);
       }
 
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/amazon/products?${params.toString()}`, {
-        headers: { 'Cache-Control': 'no-cache' },
-      });
-
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/amazon/products?${params.toString()}`,
+        {
+          headers: { "Cache-Control": "no-cache" },
+        }
+      );
 
       const items = res.data?.data?.items || [];
       const newNextToken = res.data?.data?.pagination?.nextToken || null;
@@ -58,19 +61,24 @@ const Page = () => {
         // Always try to get "our price" from purchasable_offer
         let price: any = undefined;
         if (
-          attr.purchasable_offer?.[0]?.our_price?.[0]?.schedule?.[0]?.value_with_tax !== undefined
+          attr.purchasable_offer?.[0]?.our_price?.[0]?.schedule?.[0]
+            ?.value_with_tax !== undefined
         ) {
-          price = attr.purchasable_offer[0].our_price[0].schedule[0].value_with_tax;
-        } else if (
-          item.offers?.[0]?.price?.amount !== undefined
-        ) {
+          price =
+            attr.purchasable_offer[0].our_price[0].schedule[0].value_with_tax;
+        } else if (item.offers?.[0]?.price?.amount !== undefined) {
           price = item.offers[0].price.amount;
         } else {
           price = undefined;
         }
         const stock = attr.fulfillment_availability?.[0]?.quantity || 0;
         const category = attr.item_type_keyword?.[0]?.value || "unknown";
-        const asin = item.summaries?.[0]?.asin || '';
+        const asin = item.summaries?.[0]?.asin || "";
+
+        // Determine status for tab filter/search
+        let status: string = "in stock";
+        if (stock === 0) status = "out of stock";
+        else if (stock > 0 && stock <= 5) status = "low stock";
 
         return {
           id: (currentPage - 1) * 20 + index + 1,
@@ -80,6 +88,7 @@ const Page = () => {
           stock,
           category,
           sku: item.sku,
+          status,
         };
       });
 
@@ -120,9 +129,27 @@ const Page = () => {
     }
   };
 
+  // Filter products by tab and search
   const filteredProducts = products.filter((product) => {
-    if (activeTab === "all products") return true;
-    return product.status === activeTab;
+    // Tab filter
+    let tabMatch = true;
+    if (activeTab !== "all products") {
+      tabMatch = product.status === activeTab;
+    }
+
+    // Search filter (search in Name, SKU, ASIN, Category)
+    let searchMatch = true;
+    if (search.trim() !== "") {
+      const q = search.toLowerCase();
+      searchMatch =
+        (product.name?.toLowerCase() || "").includes(q) ||
+        (product.sku?.toLowerCase() || "").includes(q) ||
+        (product.asin?.toLowerCase() || "").includes(q) ||
+        (product.category?.toLowerCase() || "").includes(q) ||
+        (product.price?.toLowerCase() || "").includes(q);
+    }
+
+    return tabMatch && searchMatch;
   });
 
   return (
@@ -134,39 +161,55 @@ const Page = () => {
             Manage your product inventory
           </p>
         </div>
-        <Link href="/dashboard/amazon/products/create">
-          <Button>Add Product</Button>
-        </Link>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mb-4">
-        <TabsList className="bg-gray-100">
-          <TabsTrigger
-            value="all products"
-            className="data-[state=active]:bg-black data-[state=active]:text-white"
-          >
-            All Products
-          </TabsTrigger>
-          <TabsTrigger
-            value="in stock"
-            className="data-[state=active]:bg-black data-[state=active]:text-white"
-          >
-            In Stock
-          </TabsTrigger>
-          <TabsTrigger
-            value="low stock"
-            className="data-[state=active]:bg-black data-[state=active]:text-white"
-          >
-            Low Stock
-          </TabsTrigger>
-          <TabsTrigger
-            value="out of stock"
-            className="data-[state=active]:bg-black data-[state=active]:text-white"
-          >
-            Out of Stock
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      {/* Filter tabs, search bar and add button on the same line */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="w-full md:w-auto"
+        >
+          <TabsList className="bg-gray-100">
+            <TabsTrigger
+              value="all products"
+              className="data-[state=active]:bg-black data-[state=active]:text-white"
+            >
+              All Products
+            </TabsTrigger>
+            <TabsTrigger
+              value="in stock"
+              className="data-[state=active]:bg-black data-[state=active]:text-white"
+            >
+              In Stock
+            </TabsTrigger>
+            <TabsTrigger
+              value="low stock"
+              className="data-[state=active]:bg-black data-[state=active]:text-white"
+            >
+              Low Stock
+            </TabsTrigger>
+            <TabsTrigger
+              value="out of stock"
+              className="data-[state=active]:bg-black data-[state=active]:text-white"
+            >
+              Out of Stock
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <div className="flex gap-2 w-full md:w-auto">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full md:w-64 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring focus:ring-blue-100 text-sm"
+          />
+          {/* <Link href="/dashboard/amazon/products/create">
+            <Button>Add Product</Button>
+          </Link> */}
+        </div>
+      </div>
 
       <CustomTable>
         <CustomTableHeader>
