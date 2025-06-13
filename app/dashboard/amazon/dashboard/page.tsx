@@ -12,9 +12,9 @@ import SalesChart from "@/components/dashboard/SalesChart";
 import TotalStatCard from "@/components/dashboard/TotalStatCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-// Dummy product data
 const orders = [
   {
     id: "ORD001",
@@ -71,23 +71,37 @@ const getStatusColor = (status: string) => {
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState("all orders");
+  const [stats, setStats] = useState({
+    totalOrders: 0,
+    totalProducts: 0,
+    ordersThisMonth: 0,
+    ordersThisWeek: 0,
+    ordersToday: 0,
+  });
 
-  // Filter products based on the active tab
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "all orders") return true;
     return order.status === activeTab;
   });
 
-  // Calculate stats for each category and showing them in totalStatCard
-  const inStockCount = orders.filter((p) => p.status === "in stock").length;
-  const lowStockCount = orders.filter((p) => p.status === "low stock").length;
-  const outOfStockCount = orders.filter(
-    (p) => p.status === "out of stock"
-  ).length;
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get(
+          "/api/proxy/dashboard/stats"
+        );
+        if (res.data.success) {
+          setStats(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch stats", err);
+      }
+    };
+    fetchStats();
+  }, []);
 
   return (
     <div className="container">
-      {/* product */}
       <div className="flex justify-between mb-4">
         <div className="flex flex-col">
           <h1 className="font-semibold text-3xl">Amazon Dashboard</h1>
@@ -97,40 +111,38 @@ const Page = () => {
         </div>
       </div>
 
-      {/* TotalStat */}
       <div className="flex justify-between gap-2 mb-4">
         <TotalStatCard
-          total={orders.length}
+          total={stats.totalProducts}
           growthPercentage={1.3}
           icon="/product.svg"
           title="total product"
         />
         <TotalStatCard
-          total={inStockCount}
-          growthPercentage={1.3}
+          total={stats.ordersThisMonth}
+          growthPercentage={2.1}
           icon="/instock.svg"
-          title="in stock"
+          title="orders this month"
         />
         <TotalStatCard
-          total={lowStockCount}
-          growthPercentage={1.3}
+          total={stats.ordersThisWeek}
+          growthPercentage={0.5}
           icon="/lowstock.svg"
-          title="low stock"
+          title="orders this week"
         />
         <TotalStatCard
-          total={outOfStockCount}
-          growthPercentage={-1.3}
+          total={stats.ordersToday}
+          growthPercentage={0.2}
           icon="/outofstock.svg"
-          title="out of stock"
+          title="orders today"
         />
       </div>
 
-      {/* chart */}
       <div className="grid grid-cols-2 gap-2 mb-2">
         <SalesChart />
         <CategoryDistributionChart />
       </div>
-      {/* Tabs */}
+
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -206,7 +218,6 @@ const Page = () => {
                   <span className="cursor-pointer">
                     <Eye width={16} />
                   </span>
-
                   <span className="cursor-pointer">
                     <Trash2 width={16} className="text-red-400" />
                   </span>

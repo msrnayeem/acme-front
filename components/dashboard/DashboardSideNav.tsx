@@ -267,7 +267,7 @@ const DashboardSideNav = ({
               active={
                 isActive("/dashboard/amazon/dashboard") ||
                 isActive("/dashboard/amazon/products") ||
-                isActive("/dashboard/amazon/refund")
+                isActive("/dashboard/amazon/orders")
               }
             >
               Amazon
@@ -288,9 +288,9 @@ const DashboardSideNav = ({
                 </SubMenuItem>
                 <SubMenuItem
                   collapsed={collapsed}
-                  href="/dashboard/amazon/refund"
+                  href="/dashboard/amazon/orders"
                 >
-                  Refund
+                  Orders
                 </SubMenuItem>
               </div>
             )}
