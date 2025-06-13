@@ -10,11 +10,11 @@ type Props = {
 
 export default function TotalStatCard({
   total,
-  growthPercentage,
+  //growthPercentage,
   icon,
   title,
 }: Props) {
-  const isGrowthUp = growthPercentage > 0;
+  //const isGrowthUp = growthPercentage > 0;
 
   return (
     <div className="rounded-xl border bg-white p-4 shadow-sm flex items-start justify-between w-[278px] ">
@@ -34,7 +34,7 @@ export default function TotalStatCard({
 
       <div className="text-black flex flex-col items-end gap-2  text-sm font-semibold">
         <div className="flex items-center gap-2 ">
-          {Math.abs(growthPercentage)}%
+         {/* {Math.abs(growthPercentage)}%
           <Image
             src={
               isGrowthUp ? "/growthIndicatorUp.svg" : "/growthIndicatorDown.svg"
@@ -42,9 +42,9 @@ export default function TotalStatCard({
             width={25}
             height={25}
             alt={isGrowthUp ? "growth up" : "growth down"}
-          />
+          /> */}
         </div>
-        <span className="font-normal text-gray-400">VS LAST WEEK</span>
+        <span className="font-normal text-gray-400"></span>
       </div>
     </div>
   );
