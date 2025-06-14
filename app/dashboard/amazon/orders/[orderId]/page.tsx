@@ -51,11 +51,10 @@ const OrderDetailPage = () => {
     const fetchOrder = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("/api/proxy/orders");
-        const orders: Order[] = res.data?.data?.payload?.Orders || [];
-        const foundOrder = orders.find((o) => o.AmazonOrderId === orderId);
-        setOrder(foundOrder ?? null);
+        const res = await axios.get(`/api/proxy/orders/${orderId}`);
+        setOrder(res.data?.order ?? null);
       } catch (error) {
+        console.error("Failed to fetch order:", error);
         setOrder(null);
       } finally {
         setLoading(false);

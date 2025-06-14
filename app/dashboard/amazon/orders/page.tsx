@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+ 
 // Color utility for order status
 const getOrderStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -30,14 +30,14 @@ const getOrderStatusColor = (status: string) => {
       return "bg-gray-100 text-gray-800";
   }
 };
-
+ 
 const statusTabs = [
   { value: "all", label: "All" },
   { value: "Shipped", label: "Shipped" },
   { value: "Unshipped", label: "Unshipped" },
   { value: "Canceled", label: "Canceled" },
 ];
-
+ 
 type Order = {
   AmazonOrderId: string;
   PurchaseDate: string;
@@ -60,13 +60,13 @@ type Order = {
     CompanyName?: string;
   };
 };
-
+ 
 const Page = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [activeTab, setActiveTab] = useState<string>("all");
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>("");
-
+ 
   // Fetch orders from proxy API
   useEffect(() => {
     const fetchOrders = async () => {
@@ -86,7 +86,7 @@ const Page = () => {
     };
     fetchOrders();
   }, []);
-
+ 
   // Filter orders by selected tab and search query
   const filteredOrders = orders.filter((order) => {
     // Tab filter
@@ -100,7 +100,7 @@ const Page = () => {
         tabMatch = order.OrderStatus?.toLowerCase() === activeTab.toLowerCase();
       }
     }
-
+ 
     // Search filter (search in OrderId, BuyerEmail, Status, Amount, etc.)
     let searchMatch = true;
     if (search.trim() !== "") {
@@ -113,137 +113,133 @@ const Page = () => {
         (order.OrderTotal?.CurrencyCode?.toLowerCase() || "").includes(q) ||
         (order.PurchaseDate ? new Date(order.PurchaseDate).toLocaleString().toLowerCase() : "").includes(q);
     }
-
+ 
     return tabMatch && searchMatch;
   });
-
+ 
   return (
-    <div className="container">
+<div className="container">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-        <div>
-          <h1 className="font-semibold text-3xl">Amazon Orders</h1>
-          <p className="font-medium text-gray-500 text-base">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+<div>
+<h1 className="font-semibold text-3xl">Amazon Orders</h1>
+<p className="font-medium text-gray-500 text-base">
             Manage your Amazon store orders
-          </p>
-        </div>
-      </div>
-
+</p>
+</div>
+</div>
+ 
       {/* Tabs and Search - put in the same row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-        <Tabs
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+<Tabs
           value={activeTab}
           onValueChange={setActiveTab}
           className="w-full sm:w-auto"
-        >
-          <TabsList className="bg-gray-100">
+>
+<TabsList className="bg-gray-100">
             {statusTabs.map((tab) => (
-              <TabsTrigger
+<TabsTrigger
                 key={tab.value}
                 value={tab.value}
                 className="data-[state=active]:bg-black data-[state=active]:text-white capitalize"
-              >
+>
                 {tab.label}
-              </TabsTrigger>
+</TabsTrigger>
             ))}
-          </TabsList>
-        </Tabs>
-        <div className="w-full sm:w-80">
-          <input
+</TabsList>
+</Tabs>
+<div className="w-full sm:w-80">
+<input
             type="text"
             placeholder="Search orders..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring focus:ring-blue-100 text-sm"
           />
-        </div>
-      </div>
-
+</div>
+</div>
+ 
       {/* Table */}
-      <CustomTable>
-        <CustomTableHeader>
-          <CustomTableRow>
-            <CustomTableHead>Sl</CustomTableHead>
-            <CustomTableHead>Order ID</CustomTableHead>
-            <CustomTableHead>Buyer Email</CustomTableHead>
-            <CustomTableHead>Order Date</CustomTableHead>
-            <CustomTableHead>Status</CustomTableHead>
-            <CustomTableHead>Amount</CustomTableHead>
-            <CustomTableHead>Shipped/Unshipped</CustomTableHead>
-            <CustomTableHead>Action</CustomTableHead>
-          </CustomTableRow>
-        </CustomTableHeader>
-        <CustomTableBody>
+<CustomTable>
+<CustomTableHeader>
+<CustomTableRow>
+<CustomTableHead>Sl</CustomTableHead>
+<CustomTableHead>Order ID</CustomTableHead>
+<CustomTableHead>Buyer Email</CustomTableHead>
+<CustomTableHead>Order Date</CustomTableHead>
+<CustomTableHead>Status</CustomTableHead>
+<CustomTableHead>Amount</CustomTableHead>
+<CustomTableHead>Shipped/Unshipped</CustomTableHead>
+<CustomTableHead>Action</CustomTableHead>
+</CustomTableRow>
+</CustomTableHeader>
+<CustomTableBody>
           {loading ? (
-            <CustomTableRow>
-              <CustomTableCell colSpan={8}>
-                <div className="text-center py-8 text-gray-500">
-                  Loading orders...
-                </div>
-              </CustomTableCell>
-            </CustomTableRow>
+<CustomTableRow>
+<td colSpan={8} className="text-center py-8 text-gray-500">
+                Loading orders...
+</td>
+</CustomTableRow>
           ) : filteredOrders.length > 0 ? (
             filteredOrders.map((order, idx) => (
-              <CustomTableRow key={order.AmazonOrderId} variant="striped">
-                <CustomTableCell>{idx + 1}</CustomTableCell>
-                <CustomTableCell>
-                  <Link
+<CustomTableRow key={order.AmazonOrderId} variant="striped">
+<CustomTableCell>{idx + 1}</CustomTableCell>
+<CustomTableCell>
+<Link
                     href={`/dashboard/amazon/orders/${order.AmazonOrderId}`}
                     className="text-blue-600 underline hover:text-blue-800"
-                  >
+>
                     {order.AmazonOrderId}
-                  </Link>
-                </CustomTableCell>
-                <CustomTableCell>
+</Link>
+</CustomTableCell>
+<CustomTableCell>
                   {order.BuyerInfo?.BuyerEmail || "-"}
-                </CustomTableCell>
-                <CustomTableCell>
+</CustomTableCell>
+<CustomTableCell>
                   {order.PurchaseDate
                     ? new Date(order.PurchaseDate).toLocaleString()
                     : "-"}
-                </CustomTableCell>
-                <CustomTableCell className="capitalize">
-                  <span
+</CustomTableCell>
+<CustomTableCell className="capitalize">
+<span
                     className={`${getOrderStatusColor(
                       order.OrderStatus
                     )} px-3 rounded-4xl py-1 font-semibold`}
-                  >
+>
                     {order.OrderStatus || "-"}
-                  </span>
-                </CustomTableCell>
-                <CustomTableCell>
+</span>
+</CustomTableCell>
+<CustomTableCell>
                   {order.OrderTotal
                     ? `${order.OrderTotal.CurrencyCode} ${order.OrderTotal.Amount}`
                     : "-"}
-                </CustomTableCell>
-                <CustomTableCell>
+</CustomTableCell>
+<CustomTableCell>
                   {order.NumberOfItemsShipped ?? 0} /{" "}
                   {order.NumberOfItemsUnshipped ?? 0}
-                </CustomTableCell>
-                <CustomTableCell>
-                  <Link
+</CustomTableCell>
+<CustomTableCell>
+<Link
                     href={`/dashboard/amazon/orders/${order.AmazonOrderId}`}
                     className="flex justify-center items-center text-gray-600 hover:text-blue-600"
                     title="View"
-                  >
-                    <Eye width={16} />
-                  </Link>
-                </CustomTableCell>
-              </CustomTableRow>
+>
+<Eye width={16} />
+</Link>
+</CustomTableCell>
+</CustomTableRow>
             ))
           ) : (
-            <CustomTableRow>
-              <CustomTableCell colSpan={8}>
-                <div className="text-center py-8 text-gray-500">
-                  No orders found for the selected filter.
-                </div>
-              </CustomTableCell>
-            </CustomTableRow>
+<CustomTableRow>
+<td colSpan={8} className="text-center py-8 text-gray-500">
+                No orders found for the selected filter.
+</td>
+</CustomTableRow>
           )}
-        </CustomTableBody>
-      </CustomTable>
-    </div>
+</CustomTableBody>
+</CustomTable>
+</div>
   );
 };
-
+ 
 export default Page;

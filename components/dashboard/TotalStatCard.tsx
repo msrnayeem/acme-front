@@ -9,7 +9,7 @@ type Props = {
   title: string;
   href?: string;
 };
-
+ 
 export default function TotalStatCard({
   total,
   growthPercentage,
@@ -19,11 +19,11 @@ export default function TotalStatCard({
 }: Props) {
   const isGrowthUp = growthPercentage > 0;
   const router = useRouter();
-
+    
   const handleClick = () => {
     if (href) router.push(href);
   };
-
+ 
   return (
     <div
       onClick={handleClick}
