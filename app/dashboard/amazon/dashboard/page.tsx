@@ -117,24 +117,28 @@ const Page = () => {
           growthPercentage={1.3}
           icon="/product.svg"
           title="total product"
+          href="/dashboard/amazon/products"
         />
         <TotalStatCard
           total={stats.ordersThisMonth}
           growthPercentage={2.1}
           icon="/instock.svg"
           title="orders this month"
+          href="/dashboard/amazon/orders"
         />
         <TotalStatCard
           total={stats.ordersThisWeek}
           growthPercentage={0.5}
           icon="/lowstock.svg"
           title="orders this week"
+          href="/dashboard/amazon/orders"
         />
         <TotalStatCard
           total={stats.ordersToday}
           growthPercentage={0.2}
           icon="/outofstock.svg"
           title="orders today"
+          href="/dashboard/amazon/orders"
         />
       </div>
 
