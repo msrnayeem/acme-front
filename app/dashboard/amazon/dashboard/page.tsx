@@ -25,33 +25,6 @@ const orders = [
     total: "$150.00",
     status: "completed",
   },
-  {
-    id: "ORD002",
-    customer: "Jane Roe",
-    admin: "Bob Johnson",
-    date: "2025-05-09",
-    items: 1,
-    total: "$59.49",
-    status: "pending",
-  },
-  {
-    id: "ORD003",
-    customer: "Alice Blue",
-    admin: "Carol White",
-    date: "2025-05-08",
-    items: 2,
-    total: "$89.99",
-    status: "processing",
-  },
-  {
-    id: "ORD004",
-    customer: "Mark Green",
-    admin: "Dan Brown",
-    date: "2025-05-07",
-    items: 4,
-    total: "$200.00",
-    status: "cancel",
-  },
 ];
 
 const getStatusColor = (status: string) => {

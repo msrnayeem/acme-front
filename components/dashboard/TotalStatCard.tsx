@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
- 
+
 type Props = {
   total: number;
   growthPercentage: number;
@@ -19,7 +19,7 @@ export default function TotalStatCard({
 }: Props) {
   const isGrowthUp = growthPercentage > 0;
   const router = useRouter();
- 
+    
   const handleClick = () => {
     if (href) router.push(href);
   };
@@ -44,7 +44,7 @@ export default function TotalStatCard({
           </p>
         </div>
       </div>
- 
+
       <div className="text-black flex flex-col items-end gap-2 text-sm font-semibold">
         <div className="flex items-center gap-2 ">
           {Math.abs(growthPercentage)}%
