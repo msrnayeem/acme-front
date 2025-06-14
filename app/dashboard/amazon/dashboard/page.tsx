@@ -25,33 +25,6 @@ const orders = [
     total: "$150.00",
     status: "completed",
   },
-  {
-    id: "ORD002",
-    customer: "Jane Roe",
-    admin: "Bob Johnson",
-    date: "2025-05-09",
-    items: 1,
-    total: "$59.49",
-    status: "pending",
-  },
-  {
-    id: "ORD003",
-    customer: "Alice Blue",
-    admin: "Carol White",
-    date: "2025-05-08",
-    items: 2,
-    total: "$89.99",
-    status: "processing",
-  },
-  {
-    id: "ORD004",
-    customer: "Mark Green",
-    admin: "Dan Brown",
-    date: "2025-05-07",
-    items: 4,
-    total: "$200.00",
-    status: "cancel",
-  },
 ];
 
 const getStatusColor = (status: string) => {
@@ -117,24 +90,28 @@ const Page = () => {
           growthPercentage={1.3}
           icon="/product.svg"
           title="total product"
+          href="/dashboard/amazon/products"
         />
         <TotalStatCard
           total={stats.ordersThisMonth}
           growthPercentage={2.1}
           icon="/instock.svg"
           title="orders this month"
+          href="/dashboard/amazon/orders"
         />
         <TotalStatCard
           total={stats.ordersThisWeek}
           growthPercentage={0.5}
           icon="/lowstock.svg"
           title="orders this week"
+          href="/dashboard/amazon/orders"
         />
         <TotalStatCard
           total={stats.ordersToday}
           growthPercentage={0.2}
           icon="/outofstock.svg"
           title="orders today"
+          href="/dashboard/amazon/orders"
         />
       </div>
 
